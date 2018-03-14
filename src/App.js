@@ -7,6 +7,7 @@ class App extends Component {
   }
   render() {
     var interval;
+    // Whattup Ty!!!
     return (
       <svg width={window.innerWidth} height={window.innerHeight}>
         <rect
