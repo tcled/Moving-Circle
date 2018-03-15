@@ -1,15 +1,32 @@
 import React, { Component } from "react";
-import "./App.css";
 
-class App extends Component {
-  circleMoving() {
-    console.log("This is Working");
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      cx: "50",
+      cy: "50",
+      intervalID: null
+    };
+  }
+  startDrag(e) {
+    console.log("start");
+    var intervalID = setInterval(e => this.move(e), 16.667);
+    this.setState({ intervalID: intervalID });
+  }
+  move(e) {
+    this.setState({
+      cx: e.clientX,
+      cy: e.clientY
+    });
+  }
+  finishDrag() {
+    console.log("finish");
+    clearInterval(this.state.intervalID);
   }
   render() {
-    var interval;
-    // Whattup Ty!!!
     return (
-      <svg width={window.innerWidth} height={window.innerHeight}>
+      <svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}>
         <rect
           width="100%"
           height="100%"
@@ -18,10 +35,10 @@ class App extends Component {
           strokeWidth="10"
         />
         <circle
-          onMouseDown={() => setInterval(this.circleMoving, 16.667)}
-          onMouseUp={() => clearInterval(this.circleMoving)}
-          cx="50"
-          cy="50"
+          onMouseDown={e => this.startDrag(e)}
+          onMouseUp={() => this.finishDrag()}
+          cx={this.state.cx}
+          cy={this.state.cy}
           r="40"
           stroke="blue"
           strokeWidth="10"
@@ -31,5 +48,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
