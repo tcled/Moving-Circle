@@ -6,23 +6,24 @@ export default class App extends Component {
     this.state = {
       cx: "50",
       cy: "50",
-      intervalID: null
+      dragging: false
     };
   }
-  startDrag(e) {
+  startDrag() {
     console.log("start");
-    var intervalID = setInterval(e => this.move(e), 16.667);
-    this.setState({ intervalID: intervalID });
+    this.setState({ dragging: true });
   }
   move(e) {
-    this.setState({
-      cx: e.clientX,
-      cy: e.clientY
-    });
+    if (this.state.dragging) {
+      this.setState({
+        cx: e.clientX,
+        cy: e.clientY
+      });
+    }
   }
   finishDrag() {
     console.log("finish");
-    clearInterval(this.state.intervalID);
+    this.setState({ dragging: false });
   }
   render() {
     return (
@@ -35,7 +36,8 @@ export default class App extends Component {
           strokeWidth="10"
         />
         <circle
-          onMouseDown={e => this.startDrag(e)}
+          onMouseDown={() => this.startDrag()}
+          onMouseMove={e => this.move(e)}
           onMouseUp={() => this.finishDrag()}
           cx={this.state.cx}
           cy={this.state.cy}
